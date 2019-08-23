@@ -5,10 +5,7 @@
       id="LAY-user-login"
     >
       <div class="layadmin-user-login-main">
-        <div class="layadmin-user-login-box layadmin-user-login-header">
-          <h2>WebAdmin</h2>
-          <p>WebAdmin单页面后台管理模板系统</p>
-        </div>
+        <Header></Header>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
           <div class="layui-form-item">
             <label
@@ -74,7 +71,7 @@
               <span>记住密码</span>
               <i class="layui-icon layui-icon-ok" @click="remember=!remember"></i>
             </div>
-            <router-link tag="a" to="" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</router-link>
+            <router-link tag="a" to="/forget/Z" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</router-link>
           </div>
           <div class="layui-form-item">
             <button
@@ -82,45 +79,19 @@
               @click="Login"
             >登 录</button>
           </div>
-          <div class="layui-trans layui-form-item layadmin-user-login-other">
-            <label>社交账号登录</label>
-            <a href="javascript:;">
-              <i class="layui-icon layui-icon-login-qq"></i>
-            </a>
-            <a href="javascript:;">
-              <i class="layui-icon layui-icon-login-wechat"></i>
-            </a>
-            <a href="javascript:;">
-              <i class="layui-icon layui-icon-login-weibo"></i>
-            </a>
-            <router-link tag="a" to="" class="layadmin-user-jump-change layadmin-link">注册帐号</router-link>
-          </div>
+          <OtherLoginType type="Login" title="社交账号登录"></OtherLoginType>
         </div>
       </div>
 
-      <div class="layui-trans layadmin-user-login-footer">
-        <p>
-          © 2019
-          <a href="javascript:void(0)" target="_blank">Web-Admin</a>
-        </p>
-        <p>
-          <span>
-            <a href="javascript:void(0)" target="_blank">Web-Admin</a>
-          </span>
-          <span>
-            <a href="javascript:void(0)" target="_blank">Web-Admin</a>
-          </span>
-          <span>
-            <a href="javascript:void(0)" target="_blank">Web-Admin</a>
-          </span>
-        </p>
-      </div>
+      <Footer></Footer>
     </div>
   </div>
 </template>
 
 <script>
-import "../assets/css/login.css";
+import Footer from '@/components/Footer.vue'
+import Header from '@/components/LoginHead.vue'
+import OtherLoginType from "@/components/OtherLoginType.vue"
 export default {
   data: function () {
     return {
@@ -129,6 +100,11 @@ export default {
       password: '',
       vercode: ''
     }
+  },
+  components: {
+    Footer,
+    Header,
+    OtherLoginType
   },
   methods: {
     Login() {

@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import './assets/css/layui.css'
 import './assets/css/admin.css'
+import "./assets/css/login.css";
 
 Vue.config.productionTip = false
 
