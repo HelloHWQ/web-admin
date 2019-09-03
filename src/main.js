@@ -4,11 +4,14 @@ import router from './router'
 import store from './store'
 import './assets/css/layui.css'
 import './assets/css/admin.css'
-import "./assets/css/login.css";
+import "./assets/css/login.css"
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 
-new Vue({
+Vue.use(ElementUI)
+var vm = new Vue({
   router,
   store,
   render: h => h(App)

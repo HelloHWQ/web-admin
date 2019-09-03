@@ -1,9 +1,6 @@
 <template>
   <div class="layadmin-tabspage-none">
-    <div
-      class="layadmin-user-login layadmin-user-display-show"
-      id="LAY-user-login"
-    >
+    <div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login">
       <div class="layadmin-user-login-main">
         <Header></Header>
         <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
@@ -15,8 +12,7 @@
             <input
               type="text"
               name="username"
-              id="LAY-user-login-username"
-              lay-verify="required"
+              required
               placeholder="用户名"
               class="layui-input"
               v-model="username"
@@ -30,8 +26,7 @@
             <input
               type="password"
               name="password"
-              id="LAY-user-login-password"
-              lay-verify="required"
+              required
               placeholder="密码"
               class="layui-input"
               v-model="password"
@@ -47,8 +42,7 @@
                 <input
                   type="text"
                   name="vercode"
-                  id="LAY-user-login-vercode"
-                  lay-verify="required"
+                  required
                   placeholder="图形验证码"
                   class="layui-input"
                   v-model="vercode"
@@ -67,17 +61,23 @@
           </div>
           <div class="layui-form-item" style="margin-bottom: 20px;">
             <input type="checkbox" name="remember" lay-skin="primary" title="记住密码" />
-            <div class="layui-unselect layui-form-checkbox" :class="{'layui-form-checked': remember}" lay-skin="primary">
+            <div
+              class="layui-unselect layui-form-checkbox"
+              :class="{'layui-form-checked': remember}"
+              lay-skin="primary"
+            >
               <span>记住密码</span>
               <i class="layui-icon layui-icon-ok" @click="remember=!remember"></i>
             </div>
-            <router-link tag="a" to="/forget/Z" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</router-link>
+            <router-link
+              tag="a"
+              to="/forget/Z"
+              class="layadmin-user-jump-change layadmin-link"
+              style="margin-top: 7px;"
+            >忘记密码？</router-link>
           </div>
           <div class="layui-form-item">
-            <button
-              class="layui-btn layui-btn-fluid"
-              @click="Login"
-            >登 录</button>
+            <button class="layui-btn layui-btn-fluid" @click="Login">登 录</button>
           </div>
           <OtherLoginType type="Login" title="社交账号登录"></OtherLoginType>
         </div>
@@ -89,26 +89,84 @@
 </template>
 
 <script>
-import Footer from '@/components/Footer.vue'
-import Header from '@/components/LoginHead.vue'
-import OtherLoginType from "@/components/OtherLoginType.vue"
+import Footer from "@/components/Footer.vue";
+import Header from "@/components/LoginHead.vue";
+import OtherLoginType from "@/components/OtherLoginType.vue";
+import axios from "../assets/js/ajax.js";
+import crypto from "../assets/js/secret.js";
+
 export default {
-  data: function () {
+  data: function() {
     return {
       remember: false,
-      username: '',
-      password: '',
-      vercode: ''
-    }
+      username: "",
+      password: "",
+      vercode: ""
+    };
   },
   components: {
     Footer,
     Header,
     OtherLoginType
   },
+  mounted() {
+    // 获取是否记录了密码
+    this.remember = Boolean(localStorage.getItem("remember"));
+    if (this.remember === true) {
+      this.username = crypto.Decrypt(localStorage.getItem("name")) || "";
+      this.password = crypto.Decrypt(localStorage.getItem("pwd")) || "";
+    }
+  },
   methods: {
     Login() {
-
+      if (this.username == "" || this.password == "") {
+        this.$message({
+          message: "用户名或密码不能为空",
+          type: "warning",
+          center: true
+        });
+        return;
+      }
+      let that = this;
+      axios
+        .post('/api/user', {
+          code: this.username,
+          password: this.password,
+          name: 'login'
+        })
+        .then(function(response) {
+          if (response.status == '200' && response.data == '3') {
+            that.rememberSecret(that.remember);
+            // 保存登录状态
+            that.$store.commit('login',{username: that.username});
+            that.$router.push({ name: 'home' });
+          } else {
+            that.$message({
+              message: '用户名或密码不正确！',
+              type: 'error',
+              center: true
+            });
+          }
+        });
+    },
+    rememberSecret(isremember) {
+      if (isremember === true) {
+        // 记住用户名和密码
+        let name = crypto.Encrypt(this.username);
+        let pwd = crypto.Encrypt(this.password);
+        localStorage.setItem("name", name);
+        localStorage.setItem("pwd", pwd);
+        localStorage.setItem("remember", isremember);
+      } else {
+        localStorage.setItem("name", "");
+        localStorage.setItem("pwd", "");
+        localStorage.setItem("remember", isremember);
+      }
+    }
+  },
+  watch: {
+    remember: function(nval, oval) {
+      this.rememberSecret(nval);
     }
   }
 };
@@ -125,8 +183,8 @@ export default {
   .layui-nav
   > .layui-nav-item
   > .layui-nav-child {
-    background-color: #20222a !important;
-  }
+  background-color: #20222a !important;
+}
 .layui-nav-tree .layui-this,
 .layui-nav-tree .layui-this > a,
 .layui-nav-tree .layui-nav-child dd.layui-this,
