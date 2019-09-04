@@ -1,9 +1,9 @@
 <template>
   <div class="layui-side layui-side-menu">
     <div class="layui-side-scroll">
-      <div class="layui-logo" lay-href="home/console.html">
-        <span>layuiAdmin</span>
-      </div>
+      <router-link tag="div" to="/home" class="layui-logo pointer">
+        <span>Web-Admin</span>
+      </router-link>
 
       <ul
         class="layui-nav layui-nav-tree"
@@ -470,5 +470,8 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
+.pointer{
+  cursor: pointer;
+}
 </style>

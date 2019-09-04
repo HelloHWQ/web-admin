@@ -11,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
-var vm = new Vue({
+new Vue({
   router,
   store,
   render: h => h(App)

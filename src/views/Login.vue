@@ -113,8 +113,8 @@ export default {
     // 获取是否记录了密码
     this.remember = Boolean(localStorage.getItem("remember"));
     if (this.remember === true) {
-      this.username = crypto.Decrypt(localStorage.getItem("name")) || "";
-      this.password = crypto.Decrypt(localStorage.getItem("pwd")) || "";
+      this.username = crypto.Decrypt(localStorage.getItem("name")  || "");
+      this.password = crypto.Decrypt(localStorage.getItem("pwd")  || "");
     }
   },
   methods: {
@@ -165,7 +165,7 @@ export default {
     }
   },
   watch: {
-    remember: function(nval, oval) {
+    remember: function(nval) {
       this.rememberSecret(nval);
     }
   }
