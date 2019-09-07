@@ -7,12 +7,17 @@ import './assets/css/admin.css'
 import "./assets/css/login.css"
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import axios from './assets/js/ajax.js'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$axios = axios;
+
 Vue.use(ElementUI)
-new Vue({
+let vm = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+export default vm;

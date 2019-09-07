@@ -23,8 +23,7 @@
           placeholder="搜索..."
           autocomplete="off"
           class="layui-input layui-input-search"
-          layadmin-event="serach"
-          lay-action="template/search.html?keywords="
+          @keyup.enter="Search()"
         />
       </li>
       <span class="layui-nav-bar" style="left: 38px; top: 48px; width: 0px; opacity: 0;"></span>
@@ -60,7 +59,7 @@
         </a>
         <dl class="layui-nav-child layui-anim layui-anim-upbit" :class="{'layui-show': isopen}">
           <dd>
-            <router-link tag="a" to>基本资料</router-link>
+            <router-link tag="a" to="/home/userinfo">基本资料</router-link>
           </dd>
           <dd>
             <router-link tag="a" to="/editpwd">修改密码</router-link>
@@ -191,6 +190,10 @@ export default {
       this.$store.commit("exit");
 
       this.$router.push("/login");
+    },
+    Search() {
+      // 全站搜索
+      this.$message('搜索')
     }
   },
   mounted() {

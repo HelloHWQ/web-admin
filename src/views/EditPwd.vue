@@ -46,7 +46,6 @@
 <script>
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/LoginHead.vue";
-import axios from "@/assets/js/ajax.js";
 import crypto from "../assets/js/secret.js";
 import { setTimeout } from 'timers';
 export default {
@@ -64,7 +63,7 @@ export default {
     ChangePwd() {
       if (this.pwd1 != "" && this.pwd2 != "" && this.pwd1 == this.pwd2) {
         var that = this;
-        axios
+        this.$axios
           .post("/api/user", {
             code: crypto.Decrypt(localStorage.getItem('name')),
             password: this.pwd2,

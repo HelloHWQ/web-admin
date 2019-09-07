@@ -92,7 +92,6 @@
 import Footer from "@/components/Footer.vue";
 import Header from "@/components/LoginHead.vue";
 import OtherLoginType from "@/components/OtherLoginType.vue";
-import axios from "../assets/js/ajax.js";
 import crypto from "../assets/js/secret.js";
 
 export default {
@@ -113,8 +112,8 @@ export default {
     // 获取是否记录了密码
     this.remember = Boolean(localStorage.getItem("remember"));
     if (this.remember === true) {
-      this.username = crypto.Decrypt(localStorage.getItem("name")  || "");
-      this.password = crypto.Decrypt(localStorage.getItem("pwd")  || "");
+      this.username = crypto.Decrypt(localStorage.getItem("name") || "");
+      this.password = crypto.Decrypt(localStorage.getItem("pwd") || "");
     }
   },
   methods: {
@@ -128,45 +127,34 @@ export default {
         return;
       }
       let that = this;
-      axios
-        .post('/api/user', {
+      this.$axios
+        .post("/api/user", {
           code: this.username,
           password: this.password,
-          name: 'login'
+          name: "login"
         })
         .then(function(response) {
-          if (response.status == '200' && response.data == '3') {
+          if (response.status == "200" && response.data == "3") {
             that.rememberSecret(that.remember);
             // 保存登录状态
-            that.$store.commit('login',{username: that.username});
-            that.$router.push({ name: 'home' });
+            that.$store.commit("login", { usercode: that.username });
+            that.$router.push({ path: "/home" });
           } else {
             that.$message({
-              message: '用户名或密码不正确！',
-              type: 'error',
+              message: "用户名或密码不正确！",
+              type: "error",
               center: true
             });
           }
         });
     },
     rememberSecret(isremember) {
-      if (isremember === true) {
-        // 记住用户名和密码
-        let name = crypto.Encrypt(this.username);
-        let pwd = crypto.Encrypt(this.password);
-        localStorage.setItem("name", name);
-        localStorage.setItem("pwd", pwd);
-        localStorage.setItem("remember", isremember);
-      } else {
-        localStorage.setItem("name", "");
-        localStorage.setItem("pwd", "");
-        localStorage.setItem("remember", isremember);
-      }
-    }
-  },
-  watch: {
-    remember: function(nval) {
-      this.rememberSecret(nval);
+      // 记住用户名和密码
+      let name = crypto.Encrypt(this.username);
+      let pwd = crypto.Encrypt(this.password);
+      localStorage.setItem("name", name);
+      localStorage.setItem("pwd", pwd);
+      localStorage.setItem("remember", isremember);
     }
   }
 };

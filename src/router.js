@@ -6,6 +6,10 @@ import Login from './views/Login.vue'
 import Forget from './views/Forget.vue'
 import Register from './views/Register.vue'
 import EditPwd from './views/EditPwd.vue'
+import HomeConsole from './views/HomeConsole.vue'
+import UserInfo from './views/UserInfo.vue'
+import NotFound from './views/404.vue'
+import CmpError from './views/error.vue'
 
 import Common from './assets/js/checkStorage.js';
 
@@ -17,13 +21,33 @@ const router = new Router({
   routes: [
     {
       path: '/home',
-      name: 'home',
       component: Home,
       meta: {
-        title: '主页',
-        keepAlive: true, // 需要被缓存
         needLogin: true // 需要登录
-      }
+      },
+      children: [
+        {
+          path: 'console',
+          component: HomeConsole,
+          meta: {
+            needLogin: true // 需要登录
+          }
+        },
+        {
+          path: 'userinfo',
+          component: UserInfo,
+          meta: {
+            needLogin: true // 需要登录
+          }
+        },
+        {
+          path: '',
+          component: HomeConsole,
+          meta: {
+            needLogin: true
+          }
+        }
+      ]
     },
     {
       path: '/',
@@ -64,6 +88,14 @@ const router = new Router({
       component: Register
     },
     {
+      path: '/404',
+      component: NotFound
+    },
+    {
+      path: '/error',
+      component: CmpError
+    },
+    {
       path: '/*',
       redirect: 'home'
     }
@@ -77,7 +109,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.needLogin) {  // 判断该路由是否需要登录权限
     if (isLogin) { // 判断是否已经登录
       //给store存值
-      Stroe.commit('login',{username: username});
+      Stroe.commit('login',{usercode: username});
       next()
     }
     else {

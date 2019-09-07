@@ -1,11 +1,8 @@
 import axios from 'axios';
+import router from '../../router.js'
 import { Loading } from 'element-ui';
-const service = axios.create({
-    baseURL: 'http://localhost:5000', // api 的 base_url
 
-})
-
-const loading = null;
+let loading = null;
 function showFullScreenLoading() {
     loading = Loading.service({
         fullscreen: true,
@@ -19,45 +16,41 @@ function tryHideFullScreenLoading() {
     loading.close();
 }
 
-// 路由请求拦截
-// http request 拦截器
-service.interceptors.request.use(
+let instance = axios.create({
+    baseURL: 'http://localhost:5000',
+    timeout: 10000
+})
+
+// 请求拦截器
+instance.interceptors.request.use(
     config => {
-        //config.data = JSON.stringify(config.data);  
-        // config.headers['Content-Type'] = 'application/json;charset=UTF-8';
-        // //判断是否存在ticket，如果存在的话，则每个http header都加上ticket
-        // if (cookie.get("token")) {
-        //     //用户每次操作，都将cookie设置成2小时
-        //     cookie.set("token", cookie.get("token"), 1 / 12)
-        //     cookie.set("name", cookie.get("name"), 1 / 12)
-        //     config.headers.token = cookie.get("token");
-        //     config.headers.name = cookie.get("name");
-        // }
-        // 请求loading界面
-        //showFullScreenLoading();
+        showFullScreenLoading();
         return config;
     },
     error => {
-        return Promise.reject(error.response);
-    });
+        console.log(error);
+        console.log('请求拦截器报错');
+    }
+);
 
-// 路由响应拦截
-// http response 拦截器
-service.interceptors.response.use(
+// 响应拦截器
+instance.interceptors.response.use(
     response => {
-        //tryHideFullScreenLoading();
-        if (response.data.resultCode == "404") {
-            console.log("response.data.resultCode是404")
-            // 返回 错误代码-1 清除ticket信息并跳转到登录页面
-            //      cookie.del("ticket")
-            //      window.location.href='http://login.com'
-            return
-        } else {
-            return response;
+        tryHideFullScreenLoading();
+        // 处理服务端正常返回的错误信息
+        if (response.data.code == '404') {
+            router.replace({ path: '/404' });
+        } else if (response.data.code == '500') {
+            router.replace({ path: '/error' });
         }
+        return response;
     },
     error => {
-        return Promise.reject(error.response)   // 返回接口返回的错误信息
-    });
+        tryHideFullScreenLoading();
+        // 处理http错误返回例如：404、500
+        router.replace({ path: '/error' });
+        console.log(error)
+    }
+);
 
-export default service;
+export default instance;

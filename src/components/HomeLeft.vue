@@ -5,14 +5,9 @@
         <span>Web-Admin</span>
       </router-link>
 
-      <ul
-        class="layui-nav layui-nav-tree"
-        lay-shrink="all"
-        id="LAY-system-side-menu"
-        lay-filter="layadmin-system-side-menu"
-      >
+      <ul class="layui-nav layui-nav-tree">
         <li data-name="home" class="layui-nav-item layui-nav-itemed">
-          <a href="javascript:;" lay-tips="主页" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-home"></i>
             <cite>主页</cite>
             <span class="layui-nav-more"></span>
@@ -21,16 +16,10 @@
             <dd data-name="console" class>
               <a lay-href="home/console.html">控制台</a>
             </dd>
-            <dd data-name="console">
-              <a lay-href="home/homepage1.html">主页一</a>
-            </dd>
-            <dd data-name="console" class="layui-this">
-              <a lay-href="home/homepage2.html">主页二</a>
-            </dd>
           </dl>
         </li>
         <li data-name="component" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="组件" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-component"></i>
             <cite>组件</cite>
             <span class="layui-nav-more"></span>
@@ -269,7 +258,7 @@
           </dl>
         </li>
         <li data-name="template" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="页面" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-template"></i>
             <cite>页面</cite>
             <span class="layui-nav-more"></span>
@@ -320,7 +309,7 @@
           </dl>
         </li>
         <li data-name="app" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="应用" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-app"></i>
             <cite>应用</cite>
             <span class="layui-nav-more"></span>
@@ -366,7 +355,7 @@
           </dl>
         </li>
         <li data-name="senior" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="高级" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-senior"></i>
             <cite>高级</cite>
             <span class="layui-nav-more"></span>
@@ -395,7 +384,7 @@
           </dl>
         </li>
         <li data-name="user" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="用户" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-user"></i>
             <cite>用户</cite>
             <span class="layui-nav-more"></span>
@@ -413,7 +402,7 @@
           </dl>
         </li>
         <li data-name="set" class="layui-nav-item">
-          <a href="javascript:;" lay-tips="设置" lay-direction="2">
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-set"></i>
             <cite>设置</cite>
             <span class="layui-nav-more"></span>
@@ -450,12 +439,7 @@
           </dl>
         </li>
         <li data-name="get" class="layui-nav-item">
-          <a
-            href="javascript:;"
-            lay-href="//www.layui.com/admin/#get"
-            lay-tips="授权"
-            lay-direction="2"
-          >
+          <a href="javascript:;">
             <i class="layui-icon layui-icon-auz"></i>
             <cite>授权</cite>
           </a>
@@ -467,7 +451,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: function () {
+    return {
+      leftMenuList: [],
+    }
+  }
+};
 </script>
 
 <style scoped>
