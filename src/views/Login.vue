@@ -137,7 +137,7 @@ export default {
           if (response.status == "200" && response.data == "3") {
             that.rememberSecret(that.remember);
             // 保存登录状态
-            that.$store.commit("login", { usercode: that.username });
+            that.$store.commit("login", {usercode: that.username});
             that.$router.push({ path: "/home" });
           } else {
             that.$message({

@@ -52,6 +52,9 @@
           <i class="layui-icon layui-icon-screen-full"></i>
         </a>
       </li>
+      <li class="layui-nav-item layui-hide-xs">
+        <a href="javascript:;"><img width="30px" :src="userimage" /></a>
+      </li>
       <li class="layui-nav-item" @click="isopen = !isopen">
         <a href="javascript:;">
           <cite>{{usernmae}}</cite>
@@ -149,7 +152,8 @@ export default {
       left: 0,
       isopen: false,
       openAbout: false,
-      usernmae: ''
+      usernmae: '',
+      userimage: '/avatar.png'
     };
   },
   methods: {
@@ -200,6 +204,10 @@ export default {
     // 从local中获取便签内容
     this.NoteContent = localStorage.getItem("notecontent") || "";
     this.usernmae = crypto.Decrypt(localStorage.getItem("name") || "");
+    var curuser = JSON.parse(localStorage.getItem('curuser') || '');
+    if(curuser && curuser.userImage) {
+      this.userimage = curuser.userImage;
+    }
   }
 };
 </script>

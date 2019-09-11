@@ -12,6 +12,7 @@ import NotFound from './views/404.vue'
 import CmpError from './views/error.vue'
 
 import Common from './assets/js/checkStorage.js';
+import axios from './assets/js/ajax.js';
 
 Vue.use(Router)
 
@@ -51,10 +52,7 @@ const router = new Router({
     },
     {
       path: '/',
-      component: Home,
-      meta: {
-        needLogin: true // 需要登录
-      }
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -97,7 +95,7 @@ const router = new Router({
     },
     {
       path: '/*',
-      redirect: 'home'
+      redirect: '/home'
     }
   ]
 })
@@ -105,9 +103,27 @@ const router = new Router({
 // 全局路由守卫
 router.beforeEach((to, from, next) => {
   var username = Common.isLogin();
+  var user = Common.getUserInfo();
   let isLogin = username!="";
   if (to.meta.needLogin) {  // 判断该路由是否需要登录权限
     if (isLogin) { // 判断是否已经登录
+      if(!user) {
+        // 用户信息不存在
+        if (username) {
+          axios
+            .get("/api/user/" + username)
+            .then(response => {
+              if (response.status == "200") {
+                user = response.data;
+                user.usercode = user.code;
+                localStorage.setItem('curuser',JSON.stringify(user));
+              }
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      }
       //给store存值
       Stroe.commit('login',{usercode: username});
       next()

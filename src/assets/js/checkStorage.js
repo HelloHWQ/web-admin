@@ -9,5 +9,12 @@ export default {
         } else {
             return '';
         }
+    },
+    getUserInfo() {
+        var user = localStorage.getItem('curuser') || '';
+        if(user) {
+            user = JSON.parse(user);
+        }
+        return user;
     }
 }
