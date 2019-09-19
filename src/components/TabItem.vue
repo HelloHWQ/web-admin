@@ -1,20 +1,26 @@
 <template>
-  <li :class="{'layui-this': active}">
-    <router-link :to="url" tag="span">
+    <router-link :to="url" tag="li" :class="{'layui-this': active}" @click="OpenThisEvent($event)">
+    <span>
       <slot></slot>
-    </router-link>
-    <i class="layui-icon layui-unselect layui-tab-close">ဆ</i>
-  </li>
+    </span>
+    <i class="layui-icon layui-unselect layui-tab-close" @click.stop="CloseThis($event)">ဆ</i>
+  </router-link>
 </template>
 
 <script>
 export default {
   name: "TabItem",
-  props: ["url"],
+  props: ["url","active"],
   data: function() {
-    return {
-      active: true
-    };
+    return {};
+  },
+  methods: {
+    OpenThisEvent(e) {
+      this.$emit('click',e);
+    },
+    CloseThis(e) {
+      this.$emit('close',e);
+    }
   }
 };
 </script>

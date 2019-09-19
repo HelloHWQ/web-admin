@@ -14,7 +14,7 @@
           </a>
           <dl class="layui-nav-child">
             <dd data-name="console" class>
-              <a lay-href="home/console.html">控制台</a>
+              <router-link to="/home/console" tag="a">控制台</router-link>
             </dd>
           </dl>
         </li>

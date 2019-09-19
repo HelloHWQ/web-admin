@@ -31,21 +31,27 @@ const router = new Router({
           path: 'console',
           component: HomeConsole,
           meta: {
-            needLogin: true // 需要登录
+            needLogin: true, // 需要登录
+            code: 'console',
+            title: '控制台'
           }
         },
         {
           path: 'userinfo',
           component: UserInfo,
           meta: {
-            needLogin: true // 需要登录
+            needLogin: true, // 需要登录
+            code: 'userinfo',
+            title: '基本资料'
           }
         },
         {
           path: '',
           component: HomeConsole,
           meta: {
-            needLogin: true
+            needLogin: true,
+            code: 'console',
+            title: '控制台'
           }
         }
       ]
@@ -123,6 +129,13 @@ router.beforeEach((to, from, next) => {
               console.log(error);
             });
         }
+      }
+      // 对/home的子路由做处理
+      if(to.path.indexOf('/home/')>-1) {
+        var code = to.meta.code;
+        var title = to.meta.title;
+        var url = to.path;
+        Stroe.commit('AddTab',{code,title,url,show: true});
       }
       //给store存值
       Stroe.commit('login',{usercode: username});

@@ -204,7 +204,7 @@ export default {
     // 从local中获取便签内容
     this.NoteContent = localStorage.getItem("notecontent") || "";
     this.usernmae = crypto.Decrypt(localStorage.getItem("name") || "");
-    var curuser = JSON.parse(localStorage.getItem('curuser') || '');
+    var curuser = JSON.parse(localStorage.getItem('curuser') || '{}');
     if(curuser && curuser.userImage) {
       this.userimage = curuser.userImage;
     }
