@@ -50,11 +50,7 @@
               </div>
               <div class="layui-col-xs5">
                 <div style="margin-left: 10px;">
-                  <img
-                    src="https://www.oschina.net/action/user/captcha"
-                    class="layadmin-user-login-codeimg"
-                    id="LAY-user-get-vercode"
-                  />
+                  <Sidentify @refresh="refreshcode" :identifyCode="identifyCode"></Sidentify>
                 </div>
               </div>
             </div>
@@ -93,6 +89,7 @@ import Footer from "@/components/Footer.vue";
 import Header from "@/components/LoginHead.vue";
 import OtherLoginType from "@/components/OtherLoginType.vue";
 import crypto from "../assets/js/secret.js";
+import Sidentify from "@/components/identify.vue";
 
 export default {
   data: function() {
@@ -100,13 +97,15 @@ export default {
       remember: false,
       username: "",
       password: "",
-      vercode: ""
+      vercode: "",  // 用户输入
+      identifyCode: "WebA"  // 系统验证码
     };
   },
   components: {
     Footer,
     Header,
-    OtherLoginType
+    OtherLoginType,
+    Sidentify
   },
   mounted() {
     // 获取是否记录了密码
@@ -115,9 +114,20 @@ export default {
       this.username = crypto.Decrypt(localStorage.getItem("name") || "");
       this.password = crypto.Decrypt(localStorage.getItem("pwd") || "");
     }
+    // 生成随机数
+    this.identifyCode = this.getverifycode();
   },
   methods: {
     Login() {
+      // 校验验证码
+      if(this.vercode.toLowerCase() != this.identifyCode.toLowerCase()) {
+        this.$message({
+          message: "验证码输入错误！",
+          type: "warning",
+          center: true
+        });
+        return;
+      }
       if (this.username == "" || this.password == "") {
         this.$message({
           message: "用户名或密码不能为空",
@@ -155,6 +165,18 @@ export default {
       localStorage.setItem("name", name);
       localStorage.setItem("pwd", pwd);
       localStorage.setItem("remember", isremember);
+    },
+    refreshcode() {
+      // 刷新验证码
+      this.identifyCode = this.getverifycode();
+    },
+    getverifycode() {
+      const code = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+      let ret = '';
+      for(var i = 0; i < 4;i++) {
+        ret += code[Math.floor(Math.random()*(0,36))];
+      }
+      return ret;
     }
   }
 };
