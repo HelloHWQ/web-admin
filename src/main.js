@@ -10,10 +10,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from './assets/js/ajax.js'
 import Viewer from 'v-viewer'
 import 'viewerjs/dist/viewer.css'
+import echarts from 'echarts'
 
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$echarts = echarts;
 
 Viewer.setDefaults({
   Options: {

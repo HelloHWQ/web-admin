@@ -18,7 +18,7 @@ function tryHideFullScreenLoading() {
 
 let instance = axios.create({
     baseURL: 'http://localhost:5000',
-    timeout: 10000
+    timeout: 100000
 })
 
 // 请求拦截器

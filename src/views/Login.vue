@@ -16,6 +16,7 @@
               placeholder="用户名"
               class="layui-input"
               v-model="username"
+              @keyup.enter="Login"
             />
           </div>
           <div class="layui-form-item">
@@ -30,6 +31,7 @@
               placeholder="密码"
               class="layui-input"
               v-model="password"
+              @keyup.enter="Login"
             />
           </div>
           <div class="layui-form-item">
@@ -46,6 +48,7 @@
                   placeholder="图形验证码"
                   class="layui-input"
                   v-model="vercode"
+                  @keyup.enter="Login"
                 />
               </div>
               <div class="layui-col-xs5">

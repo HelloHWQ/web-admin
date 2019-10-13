@@ -1,5 +1,6 @@
 <template>
   <div class="layui-row layui-col-space15">
+    <!-- 卡片 -->
     <div class="layui-col-sm6 layui-col-md3" v-for="(item) in cardList" :key="item.title">
       <Card
         :title="item.title"
@@ -10,11 +11,14 @@
         :type="item.type"
       ></Card>
     </div>
+    <!--图表-->
+    <Charts />
   </div>
 </template>
 
 <script>
 import Card from "@/components/HomeCard.vue";
+import Charts from "@/components/HomeCharts.vue";
 export default {
   name: "homeconsole",
   data: function() {
@@ -56,7 +60,8 @@ export default {
     };
   },
   components: {
-    Card
+    Card,
+    Charts
   }
 };
 </script>
